@@ -13,6 +13,7 @@ function App() {
       <Route path="/order" element={<div>order</div>} />
       <Route path="/complete" element={<div>성공</div>} />
       <Route path="/error" element={<div>에러</div>} />
+      <Route path="*" element={<div>유효하지않은 경로</div>} />
     </Routes>
   );
 }
