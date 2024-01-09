@@ -1,3 +1,12 @@
+import smallLogo from "../../asset/images/smallLogo.svg";
+import styles from "./Header.module.css";
+
 export default function Header() {
-  return <header>헤더</header>;
+  return (
+    <header className={styles.container}>
+      <div>
+        <img src={smallLogo} alt="logo" />
+      </div>
+    </header>
+  );
 }
