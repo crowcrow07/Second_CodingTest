@@ -1,0 +1,19 @@
+.container {
+  background-color: black;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoContainer {
+  margin-bottom: 41px;
+}
+
+button {
+  border-radius: 20px;
+  background-color: #fff;
+  padding: 22px 11px;
+  font-family: "Inter";
+}
