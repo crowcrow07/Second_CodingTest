@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
 import Home from "./screen/Home/Home";
-import Order from "./screen/Order";
+import Order from "./screen/Order/Order";
 
 import "./App.css";
 
