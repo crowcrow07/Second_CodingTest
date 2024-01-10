@@ -7,6 +7,9 @@ export default function List() {
     <main className={styles.container}>
       <div className={styles.scroll}>
         <ItemCard />
+        <ItemCard />
+        <ItemCard />
+        <ItemCard />
       </div>
     </main>
   );
