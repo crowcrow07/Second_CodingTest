@@ -1,10 +1,10 @@
-import { cartState } from "../../recoil/atoms/cartState";
+import { convertCartState } from "../../recoil/selectors/convertCartState";
 import { useRecoilValue } from "recoil";
 
 import styles from "./OrderBox.module.css";
 
 export default function OrderBox({ isPending }) {
-  const cartItem = useRecoilValue(cartState);
+  const cartItem = useRecoilValue(convertCartState);
 
   return (
     <div className={styles.container}>

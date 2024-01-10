@@ -2,6 +2,8 @@ import { useState } from "react";
 import { cartState } from "../../recoil/atoms/cartState";
 import { useSetRecoilState } from "recoil";
 
+import numberToKorean from "../../util/numberToKorean";
+
 import styles from "./ItemCard.module.css";
 
 export default function ItemCard({ item }) {
@@ -50,7 +52,7 @@ export default function ItemCard({ item }) {
               +
             </button>
           </div>
-          <div>{price}원</div>
+          <div>{numberToKorean(price)}원</div>
         </div>
       </div>
     </div>

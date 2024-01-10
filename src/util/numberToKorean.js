@@ -3,6 +3,7 @@ function numberFormat(x) {
 }
 
 export default function numberToKorean(number) {
+  if (number === 0) return 0;
   let inputNumber = number < 0 ? false : number;
   let unitWords = ["", "만 ", "억 ", "조 ", "경 "];
   let splitUnit = 10000;
