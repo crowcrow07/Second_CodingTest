@@ -1,6 +1,6 @@
 import styles from "./OrderBox.module.css";
 
-export default function OrderBox() {
+export default function OrderBox({ isPending }) {
   return (
     <div className={styles.container}>
       <div className={styles.totalInfo}>
@@ -14,7 +14,7 @@ export default function OrderBox() {
         </p>
       </div>
       <div className={styles.buttonContainer}>
-        <button disabled={false}>주문하기</button>
+        <button disabled={isPending || false}>주문하기</button>
       </div>
     </div>
   );
