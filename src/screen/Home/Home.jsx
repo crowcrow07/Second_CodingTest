@@ -10,7 +10,7 @@ export default function Home() {
         <img src={logo} alt="logo" />
       </div>
       <Link to="./order">
-        <button>주문하러 가기</button>
+        <button className={styles.button}>주문하러 가기</button>
       </Link>
     </section>
   );
