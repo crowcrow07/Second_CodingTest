@@ -3,6 +3,12 @@ import { cartState } from "../../recoil/atoms/cartState";
 import { useRecoilState } from "recoil";
 
 import numberToKorean from "../../util/numberToKorean";
+import {
+  updateCart,
+  removeFromCart,
+  decreaseQuantity,
+  increaseQuantity,
+} from "../../util/cartUtils";
 
 import styles from "./ItemCard.module.css";
 
@@ -19,55 +25,18 @@ export default function ItemCard({ item }) {
   const findItemIndex = () =>
     cartItem.items.findIndex((cartItem) => cartItem.id === id);
 
-  const updateCart = (amount, totalPrice) => {
-    setCartItem((prev) => ({
-      ...prev,
-      totalAmount: prev.totalAmount + amount,
-      totalPrice: prev.totalPrice + totalPrice,
-    }));
-  };
-
-  const removeFromCart = (itemIndex) => {
-    setCartItem((prev) => ({
-      ...prev,
-      items: prev.items.filter((cartItem, index) => index !== itemIndex),
-    }));
-  };
-
-  const decreaseQuantity = (itemIndex) => {
-    setCartItem((prev) => {
-      const updatedItems = [...prev.items];
-      updatedItems[itemIndex] = {
-        ...updatedItems[itemIndex],
-        quantity: updatedItems[itemIndex].quantity - 1,
-      };
-      return { ...prev, items: updatedItems };
-    });
-  };
-
-  const increaseQuantity = (itemIndex) => {
-    setCartItem((prev) => {
-      const updatedItems = [...prev.items];
-      updatedItems[itemIndex] = {
-        ...updatedItems[itemIndex],
-        quantity: updatedItems[itemIndex].quantity + 1,
-      };
-      return { ...prev, items: updatedItems };
-    });
-  };
-
   const decreaseCount = () => {
     if (itemCount > MIN_QUANTITY) {
       const itemIndex = findItemIndex();
       const currentQuantity = cartItem.items[itemIndex].quantity;
 
       if (currentQuantity === DEFAULT_QUANTITY) {
-        removeFromCart(itemIndex);
+        removeFromCart(setCartItem, itemIndex);
       } else {
-        decreaseQuantity(itemIndex);
+        decreaseQuantity(setCartItem, itemIndex);
       }
 
-      updateCart(-1, -price);
+      updateCart(setCartItem, -1, -price);
       setItemCount((prevCount) => prevCount - 1);
     }
   };
@@ -85,11 +54,11 @@ export default function ItemCard({ item }) {
           ],
         }));
       } else {
-        increaseQuantity(itemIndex);
+        increaseQuantity(setCartItem, itemIndex);
       }
 
       setItemCount((prevCount) => prevCount + 1);
-      updateCart(1, price);
+      updateCart(setCartItem, 1, price);
     }
   };
 
