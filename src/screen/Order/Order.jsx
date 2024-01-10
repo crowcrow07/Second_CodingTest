@@ -1,7 +1,7 @@
 import Header from "../../components/Header/Header";
 import List from "../../components/List/List";
 import OrderBox from "../../components/OrderBox/OrderBox";
-import Result from "../Result/Result";
+import Loading from "../Loading/Loading";
 
 import { fetchData } from "../../api/fetchData";
 import { useQuery } from "@tanstack/react-query";
@@ -17,7 +17,7 @@ export default function Order() {
   const renderContent = () => {
     if (isPending) {
       return (
-        <Result
+        <Loading
           url={null}
           firstRow={"목록을"}
           secondRow={"불러오고 있습니다."}
