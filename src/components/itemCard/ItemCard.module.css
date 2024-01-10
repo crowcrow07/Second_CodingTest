@@ -35,7 +35,7 @@
 }
 
 .title > div:first-child {
-  margin-right: 22px;
+  margin-right: 8px;
   font-size: 18px;
 }
 
@@ -49,6 +49,10 @@
   align-items: center;
   color: white;
   font-size: 13px;
+}
+
+.none {
+  display: none !important;
 }
 
 .remote {
