@@ -1,7 +1,18 @@
+import { useState } from "react";
 import styles from "./ItemCard.module.css";
 
 export default function ItemCard({ item }) {
   const { name, event, price } = item;
+
+  const [itemCount, setItemCount] = useState(0);
+
+  const decreaseCount = () => {
+    setItemCount((prevCount) => Math.max(prevCount - 1, 0));
+  };
+
+  const increaseCount = () => {
+    setItemCount((prevCount) => Math.min(prevCount + 1, 999));
+  };
 
   return (
     <div className={`${styles.container}`}>
@@ -13,9 +24,9 @@ export default function ItemCard({ item }) {
         </div>
         <div className={styles.remote}>
           <div>
-            <button>-</button>
-            <div>0</div>
-            <button>+</button>
+            <button onClick={decreaseCount}>-</button>
+            <div>{itemCount}</div>
+            <button onClick={increaseCount}>+</button>
           </div>
           <div>{price}원</div>
         </div>
