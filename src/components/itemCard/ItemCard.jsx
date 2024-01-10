@@ -33,7 +33,7 @@ export default function ItemCard({ item }) {
   };
 
   return (
-    <div className={`${styles.container}`}>
+    <div className={`${styles.container} ${itemCount && styles.event}`}>
       <div className={styles.itemImage} />
       <div className={styles.itemInfo}>
         <div className={styles.title}>
