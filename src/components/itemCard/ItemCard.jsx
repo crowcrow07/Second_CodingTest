@@ -1,17 +1,35 @@
 import { useState } from "react";
+import { cartState } from "../../recoil/atoms/cartState";
+import { useSetRecoilState } from "recoil";
+
 import styles from "./ItemCard.module.css";
 
 export default function ItemCard({ item }) {
   const { name, event, price } = item;
 
   const [itemCount, setItemCount] = useState(0);
+  const setCartState = useSetRecoilState(cartState);
+
+  const updateCart = (amount, totalPrice) => {
+    setCartState((prev) => ({
+      ...prev,
+      totalAmount: prev.totalAmount + amount,
+      totalPrice: prev.totalPrice + totalPrice,
+    }));
+  };
 
   const decreaseCount = () => {
-    setItemCount((prevCount) => Math.max(prevCount - 1, 0));
+    if (itemCount > 0) {
+      setItemCount((prevCount) => prevCount - 1);
+      updateCart(-1, -price);
+    }
   };
 
   const increaseCount = () => {
-    setItemCount((prevCount) => Math.min(prevCount + 1, 999));
+    if (itemCount < 999) {
+      setItemCount((prevCount) => prevCount + 1);
+      updateCart(1, price);
+    }
   };
 
   return (
@@ -24,9 +42,13 @@ export default function ItemCard({ item }) {
         </div>
         <div className={styles.remote}>
           <div>
-            <button onClick={decreaseCount}>-</button>
+            <button disabled={itemCount === 0} onClick={decreaseCount}>
+              -
+            </button>
             <div>{itemCount}</div>
-            <button onClick={increaseCount}>+</button>
+            <button disabled={itemCount === 999} onClick={increaseCount}>
+              +
+            </button>
           </div>
           <div>{price}원</div>
         </div>
