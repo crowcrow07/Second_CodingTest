@@ -1,34 +1,93 @@
 import { useState } from "react";
 import { cartState } from "../../recoil/atoms/cartState";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 import numberToKorean from "../../util/numberToKorean";
 
 import styles from "./ItemCard.module.css";
 
+const MAX_QUANTITY = 999;
+const MIN_QUANTITY = 0;
+const DEFAULT_QUANTITY = 1;
+
 export default function ItemCard({ item }) {
-  const { name, event, price } = item;
+  const { id, name, event, price } = item;
 
   const [itemCount, setItemCount] = useState(0);
-  const setCartState = useSetRecoilState(cartState);
+  const [cartItem, setCartItem] = useRecoilState(cartState);
+
+  const findItemIndex = () =>
+    cartItem.items.findIndex((cartItem) => cartItem.id === id);
 
   const updateCart = (amount, totalPrice) => {
-    setCartState((prev) => ({
+    setCartItem((prev) => ({
       ...prev,
       totalAmount: prev.totalAmount + amount,
       totalPrice: prev.totalPrice + totalPrice,
     }));
   };
 
+  const removeFromCart = (itemIndex) => {
+    setCartItem((prev) => ({
+      ...prev,
+      items: prev.items.filter((cartItem, index) => index !== itemIndex),
+    }));
+  };
+
+  const decreaseQuantity = (itemIndex) => {
+    setCartItem((prev) => {
+      const updatedItems = [...prev.items];
+      updatedItems[itemIndex] = {
+        ...updatedItems[itemIndex],
+        quantity: updatedItems[itemIndex].quantity - 1,
+      };
+      return { ...prev, items: updatedItems };
+    });
+  };
+
+  const increaseQuantity = (itemIndex) => {
+    setCartItem((prev) => {
+      const updatedItems = [...prev.items];
+      updatedItems[itemIndex] = {
+        ...updatedItems[itemIndex],
+        quantity: updatedItems[itemIndex].quantity + 1,
+      };
+      return { ...prev, items: updatedItems };
+    });
+  };
+
   const decreaseCount = () => {
-    if (itemCount > 0) {
-      setItemCount((prevCount) => prevCount - 1);
+    if (itemCount > MIN_QUANTITY) {
+      const itemIndex = findItemIndex();
+      const currentQuantity = cartItem.items[itemIndex].quantity;
+
+      if (currentQuantity === DEFAULT_QUANTITY) {
+        removeFromCart(itemIndex);
+      } else {
+        decreaseQuantity(itemIndex);
+      }
+
       updateCart(-1, -price);
+      setItemCount((prevCount) => prevCount - 1);
     }
   };
 
   const increaseCount = () => {
-    if (itemCount < 999) {
+    if (itemCount < MAX_QUANTITY) {
+      const itemIndex = findItemIndex();
+
+      if (itemIndex === -1) {
+        setCartItem((prev) => ({
+          ...prev,
+          items: [
+            ...prev.items,
+            { id, name, event, price, quantity: DEFAULT_QUANTITY },
+          ],
+        }));
+      } else {
+        increaseQuantity(itemIndex);
+      }
+
       setItemCount((prevCount) => prevCount + 1);
       updateCart(1, price);
     }
@@ -44,11 +103,17 @@ export default function ItemCard({ item }) {
         </div>
         <div className={styles.remote}>
           <div>
-            <button disabled={itemCount === 0} onClick={decreaseCount}>
+            <button
+              disabled={itemCount === MIN_QUANTITY}
+              onClick={decreaseCount}
+            >
               -
             </button>
             <div>{itemCount}</div>
-            <button disabled={itemCount === 999} onClick={increaseCount}>
+            <button
+              disabled={itemCount === MAX_QUANTITY}
+              onClick={increaseCount}
+            >
               +
             </button>
           </div>
